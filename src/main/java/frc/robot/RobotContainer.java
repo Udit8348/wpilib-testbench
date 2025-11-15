@@ -4,17 +4,39 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.subsystems.Motor;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Constants.ConfigConstants;
+import frc.robot.commands.SetMotor;
 
 public class RobotContainer {
+
+  // controller
+  private final CommandXboxController m_controllerCMD = new CommandXboxController(ConfigConstants.kDriverControllerPort);
+
+  // subsystem
+  private final Motor m_arm = new Motor();
+
+  // driver station
+  private final SendableChooser<Command> m_chooser = new SendableChooser<>();
+  
   public RobotContainer() {
     configureBindings();
   }
 
-  private void configureBindings() {}
+  private void configureBindings() {
+    // joystick button A
+    m_controllerCMD.y().whileTrue(new SetMotor(m_arm, 0.9));
+    m_controllerCMD.a().whileTrue(new SetMotor(m_arm, -0.4));
+
+    // m_chooser.setDefaultOption("AutonTimeFwd", new AutonTimeFwd(m_drivetrain));
+    SmartDashboard.putData(m_chooser);
+  }
 
   public Command getAutonomousCommand() {
-    return Commands.print("No autonomous command configured");
+    return m_chooser.getSelected();
   }
 }
