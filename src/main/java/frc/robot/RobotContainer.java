@@ -18,7 +18,7 @@ public class RobotContainer {
   private final CommandXboxController m_controllerCMD = new CommandXboxController(ConfigConstants.kDriverControllerPort);
 
   // subsystem
-  private final Motor m_arm = new Motor();
+  private final Motor m_motor = new Motor();
 
   // driver station
   private final SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -29,10 +29,9 @@ public class RobotContainer {
 
   private void configureBindings() {
     // joystick button A
-    m_controllerCMD.y().whileTrue(new SetMotor(m_arm, 0.9));
-    m_controllerCMD.a().whileTrue(new SetMotor(m_arm, -0.4));
-
-    // m_chooser.setDefaultOption("AutonTimeFwd", new AutonTimeFwd(m_drivetrain));
+    m_controllerCMD.y().whileTrue(new SetMotor(m_motor, 0.9));
+    m_controllerCMD.a().whileTrue(new SetMotor(m_motor, -0.4));
+    
     SmartDashboard.putData(m_chooser);
   }
 

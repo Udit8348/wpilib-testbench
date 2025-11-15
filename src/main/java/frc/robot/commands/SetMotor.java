@@ -8,13 +8,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Motor;
 
 public class SetMotor extends Command {
-  Motor m_arm;
+  Motor m_motor;
   double m_spd;
 
-  public SetMotor(Motor arm, double spd) {
-    m_arm = arm;
+  public SetMotor(Motor motor1, double spd) {
+    m_motor = motor1;
     m_spd = spd;
-    addRequirements(m_arm);
+    addRequirements(m_motor);
   }
 
   // The initialize method is called when the command is initially scheduled.
@@ -26,7 +26,7 @@ public class SetMotor extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_arm.setSpeed(m_spd);
+    m_motor.setSpeed(m_spd);
   }
 
   // Returns true when the command should end.
@@ -41,6 +41,6 @@ public class SetMotor extends Command {
   @Override
   public void end(boolean interrupted) {
     // Stop the wheels when the command ends.
-    m_arm.setSpeed(0);
+    m_motor.setSpeed(0);
   }
 }
