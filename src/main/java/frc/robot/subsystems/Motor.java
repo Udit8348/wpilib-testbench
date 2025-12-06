@@ -7,6 +7,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+// update this to neo motor
 public class Motor extends SubsystemBase {
   // private final SparkMax intake;
   private final SparkMax intake;
