@@ -35,7 +35,8 @@ public class RobotContainer {
 
   private void configureBindings() {
     // drive train
-    m_drivetrain.setDefaultCommand(new ArcadeDrive(m_drivetrain, () -> m_controller.getLeftY() * 0.8, () -> -m_controller.getRightX() * 0.8));
+    m_drivetrain.setDefaultCommand(new ArcadeDrive(m_drivetrain, () -> m_controller.getLeftY() * 0.25, () -> -m_controller.getRightX() * -0.25
+    ));
     
     // joystick button A
     m_controllerCMD.y().whileTrue(new SetMotor(m_motor, 0.9));
