@@ -15,8 +15,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 // update this to neo motor
 public class Motor extends SubsystemBase {
-  // private final SparkMax intake;
-  private final SparkMax intake;
+  private final SparkMax motor;
   private RelativeEncoder encoder;
   private final PIDController positionPID = new PIDController(0.1, 0.0, 0.0);
   private double targetRotations = 0.0;
