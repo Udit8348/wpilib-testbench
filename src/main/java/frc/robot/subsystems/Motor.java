@@ -21,21 +21,21 @@ public class Motor extends SubsystemBase {
   private double targetRotations = 0.0;
 
   public Motor() {
-    intake = new SparkMax(CANConstants.kMotorID, MotorType.kBrushless);
+    motor = new SparkMax(CANConstants.kMotorID, MotorType.kBrushless);
 
     SparkMaxConfig inkCFG = new SparkMaxConfig();
 
     inkCFG.inverted(true).idleMode(IdleMode.kBrake).smartCurrentLimit(60);
-    intake.configure(inkCFG, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
+    motor.configure(inkCFG, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
 
-    encoder = intake.getEncoder();
+    encoder = motor.getEncoder();
     encoder.setPosition(0.0);
 
     positionPID.setTolerance(0.02);
   }
 
   public void setSpeed(double spd) {
-    intake.set(spd);
+    motor.set(spd);
   }
 
   public double getPositionRotations() {
@@ -58,6 +58,6 @@ public class Motor extends SubsystemBase {
   public void periodic() {
     double output = positionPID.calculate(getPositionRotations(), targetRotations);
     output = MathUtil.clamp(output, -1.0, 1.0);
-    intake.set(output);
+    motor.set(output);
   }
 }
