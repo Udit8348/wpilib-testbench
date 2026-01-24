@@ -44,9 +44,7 @@ public class SetMotor extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (!m_usePosition) {
-      m_motor.setSpeed(m_spd);
-    }
+    // the Command does not set the motor speed, motor periodic does.
   }
 
   // Returns true when the command should end.
