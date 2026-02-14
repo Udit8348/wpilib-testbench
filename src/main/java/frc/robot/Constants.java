@@ -7,14 +7,15 @@ public class Constants {
     }
 
     public static class CANConstants {
-      public static final int kMotorID = 5;
+      public static final int kAuxMotor1ID = 6;
+      public static final int kAuxMotor2ID = 5;
     }
 
     public static class DrivetrainConstants {
-      // CAN IDs for motor controllers
+      //OG CAN IDs for motor controllers
       public static final int kRightBackID = 4;
       public static final int kRightFrontID = 3; // use  as the leader since it has a working motor
-      public static final int kLeftBackID = 2;
-      public static final int kLeftFrontID = 1;
+      public static final int kLeftBackID = 1;
+      public static final int kLeftFrontID = 2;
     }
 }
