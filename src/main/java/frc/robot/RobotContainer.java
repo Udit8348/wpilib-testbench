@@ -24,8 +24,8 @@ public class RobotContainer {
   private final CommandXboxController m_controllerCMD = new CommandXboxController(ConfigConstants.kDriverControllerPort);
 
   // subsystems
-  private final AuxMotor m_motor1 = new AuxMotor(6);
-  private final AuxMotor m_motor2 = new AuxMotor(5);
+  private final AuxMotor m_motor1 = new AuxMotor(6); // flywheel on CAN 6
+  private final AuxMotor m_motor2 = new AuxMotor(5); // indexer on CAN 5
   private final Drive m_drivetrain = new Drive();
 
   // driver station
@@ -36,15 +36,19 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    // drive train
-    m_drivetrain.setDefaultCommand(new ArcadeDrive(m_drivetrain, () -> m_controller.getLeftY() * 0.25, () -> -m_controller.getRightX() * -0.25
-    ));
+    // drivetrain
+    m_drivetrain.setDefaultCommand(new ArcadeDrive(m_drivetrain, () -> m_controller.getLeftY() * 0.25, () -> -m_controller.getRightX() * -0.25));
     
-    //joystick button Y/A
+    //joystick button Y/A (flywheel)
+    // warning: please let the motor come to a full stop before changing its direction !!!
     m_controllerCMD.y().whileTrue(new SetMotor(m_motor1, 0.2));
     m_controllerCMD.a().whileTrue(new SetMotor(m_motor1, -0.2));
 
-    //joystick button X/B
+    // if you want better ergonomics you can use the left & right,  bumper & trigger which are the buttons at the top of the controller
+    // m_controllerCMD.leftBumper().whileTrue(new SetMotor(m_motor1, -0.2));
+    // m_controllerCMD.leftTrigger().whileTrue(new SetMotor(m_motor1, -0.2));
+
+    //joystick button X/B (indexer)
     m_controllerCMD.x().whileTrue(new SetMotor(m_motor2, 0.2));
     m_controllerCMD.b().whileTrue(new SetMotor(m_motor2, -0.2));
     
