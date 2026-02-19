@@ -30,6 +30,8 @@ public class RobotContainer {
   private final FlywheelIntake m_flywheel_intake = new FlywheelIntake(6);
   private final Drive m_drivetrain = new Drive();
 
+  private static final String kIndexerSpeed = "Indexer Speed";
+
   // driver station
   // todo: add settings to config speed limits from the driver's station
   private final SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -45,8 +47,9 @@ public class RobotContainer {
     m_flywheel_intake.setDefaultCommand(new ApplyMotorOutput(m_flywheel_intake)); // statemachine handles requested state and current state for safety
     
     //indexer : right bumpers
-    m_controllerCMD.rightBumper().whileTrue(new SetAuxMotor(m_indexer, 0.2));
-    m_controllerCMD.rightTrigger().whileTrue(new SetAuxMotor(m_indexer, -0.2));
+    double indexer_speed = SmartDashboard.getNumber(kIndexerSpeed, 0.2);
+    m_controllerCMD.rightBumper().whileTrue(new SetAuxMotor(m_indexer, indexer_speed));
+    m_controllerCMD.rightTrigger().whileTrue(new SetAuxMotor(m_indexer, -indexer_speed));
 
     // left bumper = toggle to request flywheel on and off
     m_controllerCMD.x().onTrue(
@@ -54,11 +57,12 @@ public class RobotContainer {
     );
 
     // left trigger = hold to request intaking
-    m_controllerCMD.b()
+    m_controllerCMD.leftTrigger()
       .onTrue(Commands.runOnce(() -> m_flywheel_intake.requestReverse(), m_flywheel_intake))
       .onFalse(Commands.runOnce(() -> m_flywheel_intake.stop(), m_flywheel_intake));
     
     SmartDashboard.putData(m_chooser);
+    SmartDashboard.putNumber(kIndexerSpeed, 0.2);
   }
 
   public Command getAutonomousCommand() {
