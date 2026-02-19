@@ -4,16 +4,18 @@
 
 package frc.robot.commands;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.AuxMotor;
 
 public class SetAuxMotor extends Command {
   AuxMotor m_motor;
-  double m_spd;
+  DoubleSupplier m_speed;
 
-  public SetAuxMotor(AuxMotor motor, double spd) {
+  public SetAuxMotor(AuxMotor motor, DoubleSupplier spd) {
     m_motor = motor;
-    m_spd = spd;
+    m_speed = spd;
     addRequirements(m_motor);
   }
 
@@ -25,7 +27,7 @@ public class SetAuxMotor extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_motor.setSpeed(m_spd);
+    m_motor.setSpeed(m_speed.getAsDouble());
   }
 
   // Returns true when the command should end.
