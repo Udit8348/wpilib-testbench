@@ -12,7 +12,8 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-// update this to neo motor
+// AuxMotor is models a simple motor that has no feedback control.
+// Useful for spinning a motor without any dependencies.
 public class AuxMotor extends SubsystemBase {
   private final SparkMax motor;
 
@@ -31,6 +32,5 @@ public class AuxMotor extends SubsystemBase {
 
   @Override
   public void periodic() {
-
   }
 }
