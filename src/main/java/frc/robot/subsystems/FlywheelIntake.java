@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import java.util.function.DoubleSupplier;
+
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
@@ -20,8 +22,6 @@ public class FlywheelIntake extends SubsystemBase {
     private State currentState = State.IDLE;
     private State desiredState = State.IDLE;
 
-    private static final double kForwardSpeed = 0.6;
-    private static final double kReverseSpeed = -0.4;
     private static final double kStopThreshold = 1; // RPM
 
     public FlywheelIntake(int motorID) {
@@ -30,11 +30,10 @@ public class FlywheelIntake extends SubsystemBase {
     }
 
     /* =========================
-       Intent Methods (Buttons)
+       Intent Methods
        ========================= */
 
     public void toggleForward() {
-        // if we previously asked for forward, and we ask again toggle fw off
         if (desiredState == State.FORWARD) {
             desiredState = State.IDLE;
         } else {
@@ -50,15 +49,13 @@ public class FlywheelIntake extends SubsystemBase {
         desiredState = State.IDLE;
     }
 
-    public double getVelocity() {
-        return encoder.getVelocity();
-    }
-
     /* =========================
        State Machine Execution
        ========================= */
 
-    public void applyOutput() {
+    public void applyOutput(
+            DoubleSupplier targetForwardSpeed,
+            DoubleSupplier targetReverseSpeed) {
 
         double velocity = encoder.getVelocity();
 
@@ -75,7 +72,7 @@ public class FlywheelIntake extends SubsystemBase {
                 break;
 
             case FORWARD:
-                motor.set(kForwardSpeed);
+                motor.set(targetForwardSpeed.getAsDouble());
 
                 if (desiredState != State.FORWARD) {
                     currentState = State.STOPPING;
@@ -83,7 +80,7 @@ public class FlywheelIntake extends SubsystemBase {
                 break;
 
             case REVERSE:
-                motor.set(kReverseSpeed);
+                motor.set(targetReverseSpeed.getAsDouble());
 
                 if (desiredState != State.REVERSE) {
                     currentState = State.STOPPING;
