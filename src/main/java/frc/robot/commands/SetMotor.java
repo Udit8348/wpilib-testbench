@@ -5,7 +5,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Motor;
 import frc.robot.subsystems.AuxMotor;
 
 public class SetMotor extends Command {
