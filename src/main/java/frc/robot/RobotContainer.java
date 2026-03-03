@@ -7,13 +7,15 @@ package frc.robot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.ConfigConstants;
-import frc.robot.commands.SetMotor;
-
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ArcadeDrive;
-import frc.robot.subsystems.AuxMotor;
+import frc.robot.commands.SetIndexer;
+import frc.robot.commands.SetShooter;
+import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Drive;
 
 public class RobotContainer {
@@ -23,8 +25,8 @@ public class RobotContainer {
   private final CommandXboxController m_controllerCMD = new CommandXboxController(ConfigConstants.kDriverControllerPort);
 
   // subsystems
-  private final AuxMotor m_motor1 = new AuxMotor(6);
-  private final AuxMotor m_motor2 = new AuxMotor(5);
+  private final Shooter m_shooter = new Shooter(5);
+  private final Indexer m_indexer = new Indexer(6);
   private final Drive m_drivetrain = new Drive();
 
   // driver station
@@ -38,13 +40,66 @@ public class RobotContainer {
     // drivetrain
     m_drivetrain.setDefaultCommand(new ArcadeDrive(m_drivetrain, () -> m_controller.getLeftY() * 0.65, () -> -m_controller.getRightX() * -0.65));
     
-    // indexer
-    m_controllerCMD.rightTrigger().whileTrue(new SetMotor(m_motor1, 1.0));
-    m_controllerCMD.rightBumper().whileTrue(new SetMotor(m_motor1, -1.0));
+    /**
+     *  basic indexer: press and hold for the direction you want
+     */
 
-    //joystick button X/B (indexer)
-    m_controllerCMD.leftTrigger().whileTrue(new SetMotor(m_motor2, 1.0));
-    m_controllerCMD.y().whileTrue(new SetMotor(m_motor2, -0.2));
+    // m_controllerCMD.rightTrigger().whileTrue(new SetIndexer(m_indexer, 1.0));
+    // m_controllerCMD.rightBumper().whileTrue(new SetIndexer(m_indexer, -1.0));
+
+    
+    /**
+     *  Intermediate Indexer: toggle on for either forwards or backward direction.
+     *  This means you can drive without holding this down.
+     *  Press to turn on, press same button to turn off
+     */
+
+    // m_controllerCMD.rightTrigger().toggleOnTrue(new SetIndexer(m_indexer, 0.25)); // spin slowly for collecting into the hopper
+    // m_controllerCMD.rightBumper().toggleOnTrue(new SetIndexer(m_indexer, -1.0));     // spin spin fast for shooting (might have directions mixed up, need to check)
+
+
+    /**
+     *  basic flywheel
+     */
+
+    // m_controllerCMD.leftTrigger().whileTrue(new SetShooter(m_shooter, 0.8)); // shoot
+    // m_controllerCMD.y().whileTrue(new SetShooter(m_shooter, -0.2));              // dumping (normal)
+    // m_controllerCMD.a().whileTrue(new SetShooter(m_shooter, -0.8));              // dumping (more power)
+
+    /*
+     * Advanced: Example Combined Macros for Automating Flywheel and Indexer
+     */
+
+    // press and hold
+
+    // m_controllerCMD.b().whileTrue(
+    //   Commands.parallel(
+    //         new SetIndexer(m_indexer, 0.25),
+    //         new SetShooter(m_shooter, 0.35)
+    //     )
+    // );
+    
+    // tap on / tap off
+
+    // m_controllerCMD.b().toggleOnTrue(
+    //   Commands.parallel(
+    //         new SetIndexer(m_indexer, 0.25),
+    //         new SetShooter(m_shooter, 0.35)
+    //     )
+    // );
+
+    // complex sequence example
+
+    // m_controllerCMD.b().onTrue(
+    // Commands.deadline(
+    //     Commands.waitSeconds(0.75),
+    //     new SetIndexer(m_indexer, 0.25)
+    // ).andThen(
+    //     Commands.parallel(
+    //         new SetIndexer(m_indexer, 0.25),
+    //         new SetShooter(m_shooter, 0.35)
+    //     )
+    // ));
     
     SmartDashboard.putData(m_chooser);
   }
