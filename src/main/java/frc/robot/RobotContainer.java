@@ -4,19 +4,20 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.ConfigConstants;
-import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ArcadeDrive;
+import frc.robot.commands.AutonNothing;
+import frc.robot.commands.FlywheelShoot;
 import frc.robot.commands.SetIndexer;
 import frc.robot.commands.SetShooter;
-import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Drive;
+import frc.robot.subsystems.Indexer;
+import frc.robot.subsystems.Shooter;
 
 public class RobotContainer {
 
@@ -32,20 +33,27 @@ public class RobotContainer {
   // driver station
   private final SendableChooser<Command> m_chooser = new SendableChooser<>();
   
+  
   public RobotContainer() {
     configureBindings();
   }
 
   private void configureBindings() {
     // drivetrain
-    m_drivetrain.setDefaultCommand(new ArcadeDrive(m_drivetrain, () -> m_controller.getLeftY() * 0.65, () -> -m_controller.getRightX() * -0.65));
+    m_drivetrain.setDefaultCommand(new ArcadeDrive(m_drivetrain, () -> m_controller.getLeftY() * 0.7, () -> -m_controller.getRightX() * -0.7));
+
+    //joystick button X/B (indexer)
+    m_controllerCMD.leftTrigger().whileTrue(new SetShooter(m_shooter, 0.8));
+    m_controllerCMD.x().whileTrue(new SetShooter(m_shooter, 0.3));
+    m_controllerCMD.y().whileTrue(new SetShooter(m_shooter, -0.2));
+    m_controllerCMD.a().whileTrue(new SetShooter(m_shooter, -0.8));
     
     /**
      *  basic indexer: press and hold for the direction you want
      */
 
-    // m_controllerCMD.rightTrigger().whileTrue(new SetIndexer(m_indexer, 1.0));
-    // m_controllerCMD.rightBumper().whileTrue(new SetIndexer(m_indexer, -1.0));
+    m_controllerCMD.rightTrigger().whileTrue(new SetIndexer(m_indexer, 0.5));
+    m_controllerCMD.rightBumper().whileTrue(new SetIndexer(m_indexer, -0.5)); // this is the direction for shooting
 
     
     /**
@@ -99,8 +107,11 @@ public class RobotContainer {
     //         new SetIndexer(m_indexer, 0.25),
     //         new SetShooter(m_shooter, 0.35)
     //     )
-    // ));
+    // );
     
+    // Setup SmartDashboard options for auton
+    m_chooser.setDefaultOption("AutonNothing", new AutonNothing(m_drivetrain));
+    m_chooser.addOption("DontMoveShoot", new FlywheelShoot(m_shooter, m_indexer));
     SmartDashboard.putData(m_chooser);
   }
 
