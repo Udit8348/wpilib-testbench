@@ -18,10 +18,9 @@ public class FlywheelShoot extends SequentialCommandGroup {
    */
   public FlywheelShoot(Shooter fw, Indexer idxr) {
     addCommands(
-        new ShootTime(0.8, 3, fw),
-        new SetIndexer(idxr, -0.5),
+        new ShootTime(0.7, 2, fw),
+        new SetIndexer(idxr, -0.8),
         new ShootTime(0.8, 6, fw)
-
     );
   }
 }
