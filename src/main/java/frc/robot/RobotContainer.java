@@ -45,30 +45,15 @@ public class RobotContainer {
     // drivetrain
     m_drivetrain.setDefaultCommand(new ArcadeDriveSlew(m_drivetrain, () -> m_controller.getLeftY() * 0.7, () -> -m_controller.getRightX() * -0.7, 0.5));
     // m_drivetrain.setDefaultCommand(new ArcadeDrive(m_drivetrain, () -> m_controller.getLeftY() * 0.7, () -> -m_controller.getRightX() * -0.7));
-
-    // shooter
-    // m_controllerCMD.leftTrigger().whileTrue(new SetShooter(m_shooter, 0.8));
-    // m_controllerCMD.x().whileTrue(new SetShooter(m_shooter, 0.3));
-    // m_controllerCMD.y().whileTrue(new SetShooter(m_shooter, -0.2));
-    // m_controllerCMD.a().whileTrue(new SetShooter(m_shooter, -0.8));
-
-    // indexer
-    // m_controllerCMD.rightTrigger().whileTrue(new SetIndexer(m_indexer, 0.5));
-    // m_controllerCMD.rightBumper().whileTrue(new SetIndexer(m_indexer, -0.5)); // this is the direction for shooting
-
-
-    /**
-     * 
-     *  Streamlined Architecture: Two main buttons tied to a whileTrue
-     *  Can add aux func buttons as needed.
-     * 
-     */
-    m_controllerCMD.leftTrigger().whileTrue(new Launch(m_indexer, -0.5, m_shooter, 0.7, 3.0, -1.0));
-    m_controllerCMD.rightTrigger().whileTrue(new IntoHopper(m_indexer, 0.4, m_shooter, 0.3));
+    
+    m_controllerCMD.leftTrigger().whileTrue(new Launch(m_indexer, -0.8, m_shooter, 0.7, 3.0, -1.0, false));
+    // m_controllerCMD.leftTrigger().whileTrue(new Launch(m_indexer, -0.2, m_shooter, 0.2, 3.0, 6.0, false));
+    m_controllerCMD.rightTrigger().whileTrue(new IntoHopper(m_indexer, 0.8, m_shooter, 0.3));
     
     // Setup SmartDashboard options for auton
     m_chooser.setDefaultOption("AutonNothing", new AutonNothing(m_drivetrain));
-    m_chooser.addOption("DontMoveShoot", new Launch(m_indexer, -0.5, m_shooter, 0.7, 3.0, 6.0));
+    m_chooser.addOption("DontMoveShoot", new Launch(m_indexer, -0.8, m_shooter, 0.6, 3.0, 8.0, true));
+    // m_chooser.addOption("AutonSlowSpeedTest", new Launch(m_indexer, -0.2, m_shooter, 0.2, 3.0, 6.0, true));
     SmartDashboard.putData(m_chooser);
   }
 
