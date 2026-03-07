@@ -10,11 +10,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.ConfigConstants;
-import frc.robot.commands.ArcadeDrive;
-import frc.robot.commands.AutonNothing;
-import frc.robot.commands.FlywheelShoot;
-import frc.robot.commands.SetIndexer;
-import frc.robot.commands.SetShooter;
+import frc.robot.commands.Auton.AutonNothing;
+import frc.robot.commands.Auton.FlywheelShoot;
+import frc.robot.commands.Teleop.ArcadeDrive;
+import frc.robot.commands.Teleop.ArcadeDriveSlew;
+import frc.robot.commands.Teleop.SetIndexer;
+import frc.robot.commands.Teleop.SetShooter;
+import frc.robot.commands.Teleop.IntoHopper;
+import frc.robot.commands.Teleop.Launch;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Shooter;
@@ -40,74 +43,29 @@ public class RobotContainer {
 
   private void configureBindings() {
     // drivetrain
-    m_drivetrain.setDefaultCommand(new ArcadeDrive(m_drivetrain, () -> m_controller.getLeftY() * 0.7, () -> -m_controller.getRightX() * -0.7));
+    m_drivetrain.setDefaultCommand(new ArcadeDriveSlew(m_drivetrain, () -> m_controller.getLeftY() * 0.7, () -> -m_controller.getRightX() * -0.7, 0.5));
+    // m_drivetrain.setDefaultCommand(new ArcadeDrive(m_drivetrain, () -> m_controller.getLeftY() * 0.7, () -> -m_controller.getRightX() * -0.7));
 
-    //joystick button X/B (indexer)
-    m_controllerCMD.leftTrigger().whileTrue(new SetShooter(m_shooter, 0.8));
-    m_controllerCMD.x().whileTrue(new SetShooter(m_shooter, 0.3));
-    m_controllerCMD.y().whileTrue(new SetShooter(m_shooter, -0.2));
-    m_controllerCMD.a().whileTrue(new SetShooter(m_shooter, -0.8));
-    
-    /**
-     *  basic indexer: press and hold for the direction you want
-     */
+    // shooter
+    // m_controllerCMD.leftTrigger().whileTrue(new SetShooter(m_shooter, 0.8));
+    // m_controllerCMD.x().whileTrue(new SetShooter(m_shooter, 0.3));
+    // m_controllerCMD.y().whileTrue(new SetShooter(m_shooter, -0.2));
+    // m_controllerCMD.a().whileTrue(new SetShooter(m_shooter, -0.8));
 
-    m_controllerCMD.rightTrigger().whileTrue(new SetIndexer(m_indexer, 0.5));
-    m_controllerCMD.rightBumper().whileTrue(new SetIndexer(m_indexer, -0.5)); // this is the direction for shooting
-
-    
-    /**
-     *  Intermediate Indexer: toggle on for either forwards or backward direction.
-     *  This means you can drive without holding this down.
-     *  Press to turn on, press same button to turn off
-     */
-
-    // m_controllerCMD.rightTrigger().toggleOnTrue(new SetIndexer(m_indexer, 0.25)); // spin slowly for collecting into the hopper
-    // m_controllerCMD.rightBumper().toggleOnTrue(new SetIndexer(m_indexer, -1.0));     // spin spin fast for shooting (might have directions mixed up, need to check)
+    // indexer
+    // m_controllerCMD.rightTrigger().whileTrue(new SetIndexer(m_indexer, 0.5));
+    // m_controllerCMD.rightBumper().whileTrue(new SetIndexer(m_indexer, -0.5)); // this is the direction for shooting
 
 
     /**
-     *  basic flywheel
+     * 
+     *  Streamlined Architecture: Two main buttons tied to a whileTrue
+     *  Can add aux func buttons as needed.
+     * 
      */
+    m_controllerCMD.leftTrigger().whileTrue(new Launch(m_indexer, -0.5, m_shooter, 0.8, 2.5));
+    m_controllerCMD.rightTrigger().whileTrue(new IntoHopper(m_indexer, 0.4, m_shooter, 0.3));
 
-    // m_controllerCMD.leftTrigger().whileTrue(new SetShooter(m_shooter, 0.8)); // shoot
-    // m_controllerCMD.y().whileTrue(new SetShooter(m_shooter, -0.2));              // dumping (normal)
-    // m_controllerCMD.a().whileTrue(new SetShooter(m_shooter, -0.8));              // dumping (more power)
-
-    /*
-     * Advanced: Example Combined Macros for Automating Flywheel and Indexer
-     */
-
-    // press and hold
-
-    // m_controllerCMD.b().whileTrue(
-    //   Commands.parallel(
-    //         new SetIndexer(m_indexer, 0.25),
-    //         new SetShooter(m_shooter, 0.35)
-    //     )
-    // );
-    
-    // tap on / tap off
-
-    // m_controllerCMD.b().toggleOnTrue(
-    //   Commands.parallel(
-    //         new SetIndexer(m_indexer, 0.25),
-    //         new SetShooter(m_shooter, 0.35)
-    //     )
-    // );
-
-    // complex sequence example
-
-    // m_controllerCMD.b().onTrue(
-    // Commands.deadline(
-    //     Commands.waitSeconds(0.75),
-    //     new SetIndexer(m_indexer, 0.25)
-    // ).andThen(
-    //     Commands.parallel(
-    //         new SetIndexer(m_indexer, 0.25),
-    //         new SetShooter(m_shooter, 0.35)
-    //     )
-    // );
     
     // Setup SmartDashboard options for auton
     m_chooser.setDefaultOption("AutonNothing", new AutonNothing(m_drivetrain));
