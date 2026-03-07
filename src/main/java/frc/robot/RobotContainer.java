@@ -63,13 +63,12 @@ public class RobotContainer {
      *  Can add aux func buttons as needed.
      * 
      */
-    m_controllerCMD.leftTrigger().whileTrue(new Launch(m_indexer, -0.5, m_shooter, 0.8, 2.5));
+    m_controllerCMD.leftTrigger().whileTrue(new Launch(m_indexer, -0.5, m_shooter, 0.7, 3.0, -1.0));
     m_controllerCMD.rightTrigger().whileTrue(new IntoHopper(m_indexer, 0.4, m_shooter, 0.3));
-
     
     // Setup SmartDashboard options for auton
     m_chooser.setDefaultOption("AutonNothing", new AutonNothing(m_drivetrain));
-    m_chooser.addOption("DontMoveShoot", new FlywheelShoot(m_shooter, m_indexer));
+    m_chooser.addOption("DontMoveShoot", new Launch(m_indexer, -0.5, m_shooter, 0.7, 3.0, 6.0));
     SmartDashboard.putData(m_chooser);
   }
 

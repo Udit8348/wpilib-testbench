@@ -7,6 +7,7 @@ import frc.robot.commands.TimePrimitives.ShootForTime;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Shooter;
 
+// deprecated: only worked with buggy functions
 public class FlywheelShoot extends SequentialCommandGroup {
   public FlywheelShoot(Shooter fw, Indexer idxr) {
     addCommands(

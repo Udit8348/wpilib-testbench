@@ -19,16 +19,18 @@ public class Launch extends Command {
   double m_spd_indexer;
   double m_spd_shooter;
   double spinup_time;
+  double deadline_time;
 
   private final Timer m_timer = new Timer();
 
-  public Launch(Indexer indexer, double spd_indexer, Shooter shooter, double spd_shooter, double _spinup_time) {
+  public Launch(Indexer indexer, double spd_indexer, Shooter shooter, double spd_shooter, double _spinup_time, double _deadline_time) {
     m_indexer = indexer;
     m_shooter = shooter;
 
     m_spd_indexer = spd_indexer;
     m_spd_shooter = spd_shooter;
     spinup_time = _spinup_time;
+    deadline_time = _deadline_time;
     
     addRequirements(m_indexer);
     addRequirements(m_shooter);
@@ -55,7 +57,13 @@ public class Launch extends Command {
 
   @Override
   public boolean isFinished() {
-    return false;
+    if (deadline_time <= 0) {
+      // for use in teleop, button will deschedule this
+      return false;
+    } else {
+      m_timer.hasElapsed(deadline_time);
+      return true;
+    }
   }
 
   @Override
