@@ -64,7 +64,7 @@ public class RobotContainer {
      * 
      */
     m_controllerCMD.leftTrigger().whileTrue(new Launch(m_indexer, -0.5, m_shooter, 0.8, 2.5));
-    m_controllerCMD.rightTrigger().whileTrue(new IntoHopper(m_indexer, 0.4, m_shooter, 0.3));
+    m_controllerCMD.rightTrigger().whileTrue(new IntoHopper(m_indexer, 0.5, m_shooter, 0.35));
 
     
     // Setup SmartDashboard options for auton

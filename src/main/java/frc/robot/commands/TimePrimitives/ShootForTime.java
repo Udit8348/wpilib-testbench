@@ -33,7 +33,8 @@ public class ShootForTime extends Command {
 
   @Override
   public void end(boolean interrupted) {
-    m_shooter.setSpeed(0);
+    // m_shooter.setSpeed(0);
+    m_shooter.setSpeed(m_speed);
   }
 
   @Override
