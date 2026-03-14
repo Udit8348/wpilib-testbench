@@ -4,6 +4,8 @@
 
 package frc.robot.commands.Teleop;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Indexer;
@@ -16,16 +18,16 @@ public class Launch extends Command {
   Indexer m_indexer;
   Shooter m_shooter;
 
-  double m_spd_indexer_launch;
-  double m_spd_indexer_unjam;
-  double m_spd_shooter;
+  DoubleSupplier m_spd_indexer_launch;
+  DoubleSupplier m_spd_indexer_unjam;
+  DoubleSupplier m_spd_shooter;
   double spinup_time;
   double deadline_time;
   boolean isAuto;
 
   private final Timer m_timer = new Timer();
 
-  public Launch(Indexer indexer, double spd_indexer_launch, double spd_indexer_unjam, Shooter shooter, double spd_shooter, double _spinup_time, double _deadline_time, boolean _isAuto) {
+  public Launch(Indexer indexer, DoubleSupplier spd_indexer_launch, DoubleSupplier spd_indexer_unjam, Shooter shooter, DoubleSupplier spd_shooter, double _spinup_time, double _deadline_time, boolean _isAuto) {
     m_indexer = indexer;
     m_shooter = shooter;
 
@@ -49,13 +51,13 @@ public class Launch extends Command {
   @Override
   public void execute() {
     // keep shooter spinning
-    m_shooter.setSpeed(m_spd_shooter);
+    m_shooter.setSpeed(m_spd_shooter.getAsDouble());
 
     // only start the indexer after a certain time delay
     if (m_timer.hasElapsed(spinup_time)) {
-      m_indexer.setSpeed(m_spd_indexer_launch);   
+      m_indexer.setSpeed(m_spd_indexer_launch.getAsDouble());
     } else {
-      m_indexer.setSpeed(m_spd_indexer_unjam);
+      m_indexer.setSpeed(m_spd_indexer_unjam.getAsDouble());
     }
   }
 
