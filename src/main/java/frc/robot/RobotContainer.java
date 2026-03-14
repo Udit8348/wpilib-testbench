@@ -29,8 +29,8 @@ public class RobotContainer {
   private final CommandXboxController m_controllerCMD = new CommandXboxController(ConfigConstants.kDriverControllerPort);
 
   // subsystems
-  private final Shooter m_shooter = new Shooter(5);
-  private final Indexer m_indexer = new Indexer(6);
+  private final Shooter m_shooter = new Shooter(Constants.CANConstants.kAuxMotor1ID);
+  private final Indexer m_indexer = new Indexer(Constants.CANConstants.kAuxMotor2ID);
   private final Drive m_drivetrain = new Drive();
 
   // driver station
@@ -53,7 +53,7 @@ public class RobotContainer {
     m_controllerCMD.a().whileTrue(new IntoHopper(m_indexer, -0.8, m_shooter, -0.8)); //unloads the hopper
     m_controllerCMD.x().whileTrue(new IntoHopper(m_indexer, 0.0, m_shooter, -0.8)); //
     m_controllerCMD.b().whileTrue(new IntoHopper(m_indexer, 0.8, m_shooter, 0.0)); //unjams back into the hopper
-    m_controllerCMD.rightTrigger().whileTrue(new IntoHopper(m_indexer, 0.5, m_shooter, 0.5));
+    m_controllerCMD.rightTrigger().whileTrue(new IntoHopper(m_indexer, 0.8, m_shooter, 0.3));
     m_controllerCMD.leftTrigger().whileTrue(new Launch(m_indexer, -0.8, m_shooter, 0.7, 3.0, -1.0, false));
                             
     // Setup SmartDashboard options for auton

@@ -7,8 +7,8 @@ public class Constants {
     }
 
     public static class CANConstants {
-      public static final int kAuxMotor1ID = 6;
-      public static final int kAuxMotor2ID = 5;
+      public static final int kAuxMotor1ID = 6; //shooter
+      public static final int kAuxMotor2ID = 5; //indexer
     }
 
     public static class DrivetrainConstants {
