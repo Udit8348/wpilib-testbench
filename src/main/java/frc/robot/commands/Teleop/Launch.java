@@ -16,7 +16,8 @@ public class Launch extends Command {
   Indexer m_indexer;
   Shooter m_shooter;
 
-  double m_spd_indexer;
+  double m_spd_indexer_launch;
+  double m_spd_indexer_unjam;
   double m_spd_shooter;
   double spinup_time;
   double deadline_time;
@@ -24,12 +25,13 @@ public class Launch extends Command {
 
   private final Timer m_timer = new Timer();
 
-  public Launch(Indexer indexer, double spd_indexer, Shooter shooter, double spd_shooter, double _spinup_time, double _deadline_time, boolean _isAuto) {
+  public Launch(Indexer indexer, double spd_indexer_launch, double spd_indexer_unjam, Shooter shooter, double spd_shooter, double _spinup_time, double _deadline_time, boolean _isAuto) {
     m_indexer = indexer;
     m_shooter = shooter;
 
     m_spd_indexer = spd_indexer;
     m_spd_shooter = spd_shooter;
+    m_spd_indexer_unjam = spd_indexer_unjam;
     spinup_time = _spinup_time;
     deadline_time = _deadline_time;
     isAuto = _isAuto;
@@ -53,7 +55,7 @@ public class Launch extends Command {
     if (m_timer.hasElapsed(spinup_time)) {
       m_indexer.setSpeed(m_spd_indexer);   
     } else {
-      m_indexer.setSpeed(0);
+      m_indexer.setSpeed(m_spd_indexer_unjam);
     }
   }
 
