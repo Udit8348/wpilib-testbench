@@ -29,9 +29,9 @@ public class Launch extends Command {
     m_indexer = indexer;
     m_shooter = shooter;
 
-    m_spd_indexer = spd_indexer;
-    m_spd_shooter = spd_shooter;
+    m_spd_indexer_launch = spd_indexer_launch;
     m_spd_indexer_unjam = spd_indexer_unjam;
+    m_spd_shooter = spd_shooter;
     spinup_time = _spinup_time;
     deadline_time = _deadline_time;
     isAuto = _isAuto;
@@ -53,7 +53,7 @@ public class Launch extends Command {
 
     // only start the indexer after a certain time delay
     if (m_timer.hasElapsed(spinup_time)) {
-      m_indexer.setSpeed(m_spd_indexer);   
+      m_indexer.setSpeed(m_spd_indexer_launch);   
     } else {
       m_indexer.setSpeed(m_spd_indexer_unjam);
     }
