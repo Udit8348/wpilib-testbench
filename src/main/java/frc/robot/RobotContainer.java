@@ -14,6 +14,7 @@ import frc.robot.commands.Auton.AutonNothing;
 import frc.robot.commands.Teleop.ArcadeDrive;
 import frc.robot.commands.Teleop.IntoHopper;
 import frc.robot.commands.Teleop.Launch;
+import frc.robot.commands.Teleop.LaunchFixed;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Shooter;
@@ -44,11 +45,11 @@ public class RobotContainer {
   
   
   public RobotContainer() {
-    SmartDashboard.putNumber(kIndexerUnjamSpd, kDefaultIndexerUnjamSpd);
-    SmartDashboard.putNumber(kIndexerLaunchSpd, kDefaultIndexerLaunchSpd);
-    SmartDashboard.putNumber(kShooterLaunchSpd, kDefaultShooterLaunchSpd);
+    // SmartDashboard.putNumber(kIndexerUnjamSpd, kDefaultIndexerUnjamSpd);
+    // SmartDashboard.putNumber(kIndexerLaunchSpd, kDefaultIndexerLaunchSpd);
+    // SmartDashboard.putNumber(kShooterLaunchSpd, kDefaultShooterLaunchSpd);
 
-    SmartDashboard.putData(m_chooser);
+    
     configureBindings();
   }
 
@@ -56,6 +57,8 @@ public class RobotContainer {
     // m_drivetrain.setDefaultCommand(new ArcadeDriveSlew(m_drivetrain, () -> m_controller.getLeftY() * 0.7, () -> -m_controller.getRightX() * -0.7, 0.5));
     // m_controllerCMD.leftTrigger().whileTrue(new Launch(m_indexer, -0.2, m_shooter, 0.2, 3.0, 6.0, false));
     // m_chooser.addOption("AutonSlowSpeedTest", new Launch(m_indexer, -0.2, m_shooter, 0.2, 3.0, 6.0, true));
+
+    SmartDashboard.putData(m_chooser);
     
     // drivetrain
     m_drivetrain.setDefaultCommand(new ArcadeDrive(m_drivetrain, () -> m_controller.getLeftY() * 0.7, () -> -m_controller.getRightX() * -0.7));
@@ -65,11 +68,12 @@ public class RobotContainer {
     m_controllerCMD.x().whileTrue(new IntoHopper(m_indexer, 0.0, m_shooter, -0.8)); //
     m_controllerCMD.b().whileTrue(new IntoHopper(m_indexer, 0.8, m_shooter, 0.0)); //unjams back into the hopper
     m_controllerCMD.rightTrigger().whileTrue(new IntoHopper(m_indexer, 0.8, m_shooter, 0.3));
-    m_controllerCMD.leftTrigger().whileTrue(new Launch(m_indexer, () -> SmartDashboard.getNumber(kIndexerLaunchSpd, kDefaultIndexerLaunchSpd), () -> SmartDashboard.getNumber(kIndexerUnjamSpd, kDefaultIndexerUnjamSpd), m_shooter, () -> SmartDashboard.getNumber(kShooterLaunchSpd, kDefaultShooterLaunchSpd), 3.0, -1.0, false));
-                            
+    m_controllerCMD.leftTrigger().whileTrue(new LaunchFixed(m_indexer, kDefaultIndexerLaunchSpd , kDefaultIndexerUnjamSpd , m_shooter, kDefaultShooterLaunchSpd , 3.0, -1.0, false));
+    
+    
     // Setup SmartDashboard options for auton
     m_chooser.setDefaultOption("AutonNothing", new AutonNothing(m_drivetrain));
-    m_controllerCMD.leftTrigger().whileTrue(new Launch(m_indexer, () -> SmartDashboard.getNumber(kIndexerLaunchSpd, kDefaultIndexerLaunchSpd), () -> SmartDashboard.getNumber(kIndexerUnjamSpd, kDefaultIndexerUnjamSpd), m_shooter, () -> SmartDashboard.getNumber(kShooterLaunchSpd, kDefaultShooterLaunchSpd), 3.0, 8.0, true)); 
+    m_chooser.addOption("Auton Shoot", new LaunchFixed(m_indexer, kDefaultIndexerLaunchSpd , kDefaultIndexerUnjamSpd , m_shooter, kDefaultShooterLaunchSpd , 3.0, 8.0, true)); 
   }
 
   public Command getAutonomousCommand() {
